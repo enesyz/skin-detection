@@ -34,16 +34,6 @@ void SkinModel::train(const cv::Mat3b& img, const cv::Mat1b& mask)
 {
 
 	//--- IMPLEMENT THIS ---//
-   /* for (int rowMask=0; rowMask < mask.rows; ++rowMask) {
-        for (int colMask=0; colMask < mask.cols; ++colMask) {
-            if((int)mask.at<uchar>(rowMask,colMask) == 255){
-                cv::Vec3b bgr = img(rowMask, colMask);
-                redColour[bgr[2]] = redColour[bgr[2]] + 1;
-                blueColour[bgr[0]] = blueColour[bgr[0]] + 1;
-                greenColour[bgr[1]] = greenColour[bgr[1]] + 1;
-            }
-        }
-    }*/
 }
 
 /// Finish the training.  This finalizes the model.  Do not call
@@ -130,20 +120,13 @@ cv::Mat1b SkinModel::classify(const cv::Mat3b& img1)
     
     
     cv::Mat1b img_gray;
-   // cv::cvtColor(img, img, CV_HSV2BGR);
     cv::cvtColor(img, img_gray, CV_BGR2GRAY);
     cv::threshold(img_gray, img_gray, 60, 255, CV_THRESH_BINARY);
-    //cv::morphologyEx(img_gray, img_gray, CV_MOP_ERODE, cv::Mat1b(3,3,1), cv::Point(-1, -1), 3);
-    //cv::morphologyEx(img_gray, img_gray, CV_MOP_DILATE, cv::Mat1b(3,3,1), cv::Point(-1, -1), 3);
-    //cv::morphologyEx(img_gray, img_gray, CV_MOP_OPEN, cv::Mat1b(7,7,1), cv::Point(-1, -1), 1);
     cv::morphologyEx(img_gray, img_gray, CV_MOP_CLOSE, cv::Mat1b(9,9,1), cv::Point(-1, -1), 1);
-   // cv::morphologyEx(img_gray, img_gray, CV_MOP_CLOSE, cv::Mat1b(9,9,1), cv::Point(-1, -1), 1);
 
     cv::medianBlur(img_gray, img_gray, 23);
     skin = img_gray;
-  //  cv::cvtColor(img, img, CV_BGR2HSV);
-   // cv::resize(img, img, cv::Size(), 0.5, 0.5);
-   // skin = img;
+
     return skin;
 }
 
